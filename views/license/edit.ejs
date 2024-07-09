@@ -21,17 +21,15 @@
                 id="active_time"
                 name="active_time"
                 autofocus
-                required
                 value="<%= license.active_time %>"
               />
             </div>
 
             <div class="mb-3">
               <label for="script" class="form-label">Script</label>
-              <select name="script" id="script" class="form-control" required>
+              <select name="script" id="script" class="form-control" >
                 <option disabled>---</option>
                 <% scripts.forEach(script => { %>
-
                 <option value="<%= script %>" <% if (script == license.script) { %>
                  selected
                 <% } %> ><%= script %></option>
@@ -46,7 +44,6 @@
                 class="form-control"
                 id="script_url"
                 name="script_url"
-                required
                 value="<%= license.script_url %>"
               />
             </div>

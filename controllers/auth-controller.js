@@ -3,40 +3,52 @@ const { USER } = require("../data");
 const { validate, AuthValidation } = require("../validation");
 
 class AuthController {
-  static viewLogin(req, res) {
-    if (req.session.user) {
-      res.redirect("/license");
+  static viewLogin(req, res, next) {
+    try {
+      if (req.session.user) {
+        res.redirect("/license");
 
-      return;
+        return;
+      }
+
+      res.render("login", { title: "Log in" });
+    } catch (error) {
+      next(error);
     }
-
-    res.render("login");
   }
 
-  static login(req, res) {
-    const { username, password } = validate(AuthValidation.LOGIN, req, res);
+  static login(req, res, next) {
+    try {
+      const { username, password } = validate(AuthValidation.LOGIN, req, res);
 
-    if (
-      username === USER.username &&
-      bcrypt.compareSync(password, USER.password)
-    ) {
-      req.session.user = { username: USER.username };
+      if (
+        username === USER.username &&
+        bcrypt.compareSync(password, USER.password)
+      ) {
+        req.session.user = { username: USER.username };
 
-      res.redirect("/license");
+        res.redirect("/license");
 
-      return;
+        return;
+      }
+
+      req.flash("status", "error");
+      req.flash("message", "Invalid username or password!");
+
+      res.redirect("/login");
+    } catch (error) {
+      next(error);
     }
-
-    req.flash("status", "error");
-    req.flash("message", "Invalid username or password!");
-
-    res.redirect("/login");
   }
 
-  static logout(req, res) {
-    req.session.destroy();
+  static logout(req, res, next) {
+    try {
+      req.session.destroy();
 
-    res.redirect("/login");
+      res.redirect("/login");
+    } catch (error) {
+      next(error);
+    }
   }
 }
 

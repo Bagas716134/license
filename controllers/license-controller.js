@@ -1,16 +1,16 @@
 const connection = require("../database");
 const { formatDateTime } = require("../utils/format-date-time");
 const { SCRIPTS } = require("../data");
-const { randomUUID } = require("crypto");
 const { LicenseValidation, validate } = require("../validation");
 const moment = require("moment");
+const randomString = require("../utils/random-string");
 
 class LicenseController {
   static async index(req, res, next) {
     try {
-      const q = "SELECT * FROM licenses ORDER BY id DESC";
-
-      const [result, fields] = await connection.promise().query(q);
+      const [result] = await connection
+        .promise()
+        .query("SELECT * FROM licenses ORDER BY id DESC");
 
       const licenses = result.map(function (item) {
         return {
@@ -20,7 +20,7 @@ class LicenseController {
         };
       });
 
-      res.render("license/index", { licenses });
+      res.render("license/index", { title: "License", licenses });
     } catch (error) {
       next(error);
     }
@@ -30,12 +30,12 @@ class LicenseController {
     try {
       const { script, license_key } = req.params;
 
-      const q =
-        "SELECT * FROM licenses WHERE script = ? AND license_key = ? LIMIT 1";
-
-      const [result, fields] = await connection
+      const [result] = await connection
         .promise()
-        .query(q, [script, license_key]);
+        .query(
+          "SELECT * FROM licenses WHERE script = ? AND license_key = ? LIMIT 1",
+          [script, license_key]
+        );
 
       let license = result[0];
 
@@ -58,7 +58,7 @@ class LicenseController {
             [startTime, expiredTime, license.id]
           );
 
-        const [result, fields] = await connection
+        const [result] = await connection
           .promise()
           .query("SELECT * FROM licenses WHERE id = ? LIMIT 1", [license.id]);
 
@@ -77,6 +77,7 @@ class LicenseController {
   static async create(req, res, next) {
     try {
       res.render("license/create", {
+        title: "Create License",
         scripts: SCRIPTS,
       });
     } catch (error) {
@@ -88,9 +89,9 @@ class LicenseController {
     try {
       const { id } = req.params;
 
-      const q = "SELECT * FROM licenses WHERE id = ? LIMIT 1";
-
-      const [result, fields] = await connection.promise().query(q, [id]);
+      const [result] = await connection
+        .promise()
+        .query("SELECT * FROM licenses WHERE id = ? LIMIT 1", [id]);
 
       const license = result[0];
 
@@ -98,7 +99,11 @@ class LicenseController {
         throw new Error("License not found!");
       }
 
-      res.render("license/edit", { license, scripts: SCRIPTS });
+      res.render("license/edit", {
+        title: "Edit License",
+        license,
+        scripts: SCRIPTS,
+      });
     } catch (error) {
       next(error);
     }
@@ -113,11 +118,12 @@ class LicenseController {
       );
 
       for (let i = 0; i < count; i++) {
-        const q = `INSERT INTO licenses (license_key, active_time, script, script_url) VALUES (?, ?, ?, ?)`;
-
         await connection
           .promise()
-          .query(q, [randomUUID().toString(), active_time, script, script_url]);
+          .query(
+            "INSERT INTO licenses (license_key, active_time, script, script_url) VALUES (?, ?, ?, ?)",
+            [randomString(35), active_time, script, script_url]
+          );
       }
 
       res.redirect("/license");
@@ -133,9 +139,9 @@ class LicenseController {
       const { id } = req.params;
       const { active_time, script, script_url } = req.body;
 
-      const q = "SELECT * FROM licenses WHERE id = ? LIMIT 1";
-
-      const [result, fields] = await connection.promise().query(q, [id]);
+      const [result] = await connection
+        .promise()
+        .query("SELECT * FROM licenses WHERE id = ? LIMIT 1", [id]);
 
       const license = result[0];
 
@@ -170,6 +176,9 @@ class LicenseController {
       const q = "DELETE FROM licenses WHERE id = ?";
 
       await connection.promise().query(q, [id]);
+
+      req.flash("status", "success");
+      req.flash("message", "License deleted successfully");
 
       res.redirect("/license");
     } catch (error) {

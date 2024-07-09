@@ -53,6 +53,6 @@ app.use(function (error, req, res, next) {
 });
 
 // Start server
-app.listen(5000, "127.0.0.1", function () {
-  console.info("Server started on http://127.0.0.1:5000");
+app.listen(process.env.APP_PORT, function () {
+  console.info("Server started on http://127.0.0.1:" + process.env.APP_PORT);
 });

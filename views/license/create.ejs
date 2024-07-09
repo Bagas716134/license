@@ -20,7 +20,6 @@
                 id="count"
                 min="1"
                 name="count"
-                required
                 value="1"
               />
             </div>
@@ -40,7 +39,7 @@
             </div>
             <div class="mb-3">
               <label for="script" class="form-label">Script</label>
-              <select name="script" id="script" class="form-control" required>
+              <select name="script" id="script" class="form-control">
                 <option selected disabled>---</option>
                 <% scripts.forEach(script => { %>
 
@@ -56,7 +55,6 @@
                 class="form-control"
                 id="script_url"
                 name="script_url"
-                required
               />
             </div>
 
