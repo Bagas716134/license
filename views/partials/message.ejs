@@ -1,0 +1,9 @@
+<% if (message != '') { %>
+<div
+  class="alert alert-<%= status == 'error' ? 'danger' : status %>"
+  role="alert"
+>
+  <%= message %>
+</div>
+
+<% } %>

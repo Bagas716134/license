@@ -1,0 +1,59 @@
+<%= extend('../layout') %> <%- include('../partials/navbar') %>
+
+<div class="container mt-3">
+  <div class="row justify-content-center">
+    <div class="col-md-7">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Edit License</h5>
+        </div>
+
+        <div class="card-body">
+          <%- include('../partials/message') %>
+
+          <form action="/license/<%= license.id %>?_method=PATCH" method="post">
+            <div class="mb-3">
+              <label for="active_time" class="form-label">Active Time</label>
+              <input
+                type="number"
+                class="form-control"
+                id="active_time"
+                name="active_time"
+                autofocus
+                required
+                value="<%= license.active_time %>"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="script" class="form-label">Script</label>
+              <select name="script" id="script" class="form-control" required>
+                <option disabled>---</option>
+                <% scripts.forEach(script => { %>
+
+                <option value="<%= script %>" <% if (script == license.script) { %>
+                 selected
+                <% } %> ><%= script %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="script_url" class="form-label">Script Url</label>
+              <input
+                type="text"
+                class="form-control"
+                id="script_url"
+                name="script_url"
+                required
+                value="<%= license.script_url %>"
+              />
+            </div>
+
+            <button type="submit" class="btn btn-primary rounded-0">
+              Update
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,85 @@
+<% extend('../layout') %> <%- include('../partials/navbar') %>
+
+<div class="container mt-3">
+  <div class="row mt-3">
+    <div class="col-12">
+      <a href="/license/create" class="btn btn-primary rounded-0"
+        >Add License</a
+      >
+      <a href="/logout" class="btn btn-danger rounded-0">Log Out</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card mt-3">
+        <div class="card-header">
+          <h5 class="card-title mb-0">License List</h5>
+        </div>
+
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>License Key</th>
+                  <th>Start Time</th>
+                  <th>Active Time</th>
+                  <th>Expired Time</th>
+                  <th>Script</th>
+                  <th>Script Url</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <% licenses.forEach(item => { %>
+                <tr>
+                  <td><%= item.id %></td>
+                  <td><%= item.license_key %></td>
+                  <td><%= item.start_time %></td>
+                  <td><%= item.active_time %></td>
+                  <td><%= item.expired_time %></td>
+                  <td><%= item.script %></td>
+                  <td><%= item.script_url %></td>
+                  <td>
+                    <a
+                      href="/license/edit/<%= item.id %>"
+                      class="link-underline-info"
+                      >Edit</a
+                    >
+                    <a
+                      href="#"
+                      data-id="<%= item.id %>"
+                      class="link-underline-danger btn-delete"
+                      >Delete</a
+                    >
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form action="" method="post" id="form-delete"></form>
+
+<script>
+  document.querySelectorAll(".btn-delete").forEach((item) => {
+    item.addEventListener("click", function (ev) {
+      ev.preventDefault();
+
+      const form = document.getElementById("form-delete");
+
+      if (confirm("Are you sure?")) {
+        form.action = `/license/${item.dataset.id}?_method=DELETE`;
+        form.submit();
+      }
+    });
+  });
+</script>

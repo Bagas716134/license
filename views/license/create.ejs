@@ -1,0 +1,57 @@
+<% extend('../layout') %> <%- include('../partials/navbar') %>
+
+<div class="container mt-3">
+  <div class="row justify-content-center">
+    <div class="col-md-7">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Create License</h5>
+        </div>
+
+        <div class="card-body">
+          <%- include('../partials/message') %>
+
+          <form action="/license" method="post">
+            <div class="mb-3">
+              <label for="active_time" class="form-label">Active Time</label>
+              <div class="input-group">
+                <input
+                  type="number"
+                  class="form-control"
+                  min="1"
+                  name="active_time"
+                  id="active_time"
+                />
+                <span class="input-group-text" id="basic-addon1">Days</span>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="script" class="form-label">Script</label>
+              <select name="script" id="script" class="form-control" required>
+                <option selected disabled>---</option>
+                <% scripts.forEach(script => { %>
+
+                <option value="<%= script %>"><%= script %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="script_url" class="form-label">Script Url</label>
+              <input
+                type="text"
+                class="form-control"
+                id="script_url"
+                name="script_url"
+                required
+              />
+            </div>
+
+            <button type="submit" class="btn btn-primary rounded-0">
+              Save
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
