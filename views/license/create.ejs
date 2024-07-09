@@ -13,6 +13,19 @@
 
           <form action="/license" method="post">
             <div class="mb-3">
+              <label for="count" class="form-label">Count</label>
+              <input
+                type="number"
+                class="form-control"
+                id="count"
+                min="1"
+                name="count"
+                required
+                value="1"
+              />
+            </div>
+
+            <div class="mb-3">
               <label for="active_time" class="form-label">Active Time</label>
               <div class="input-group">
                 <input
@@ -35,6 +48,7 @@
                 <% }) %>
               </select>
             </div>
+
             <div class="mb-3">
               <label for="script_url" class="form-label">Script Url</label>
               <input
@@ -47,7 +61,7 @@
             </div>
 
             <button type="submit" class="btn btn-primary rounded-0">
-              Save
+              <i class="fa-solid fa-floppy-disk"></i> Save
             </button>
           </form>
         </div>

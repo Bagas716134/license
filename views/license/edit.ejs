@@ -12,6 +12,7 @@
           <%- include('../partials/message') %>
 
           <form action="/license/<%= license.id %>?_method=PATCH" method="post">
+
             <div class="mb-3">
               <label for="active_time" class="form-label">Active Time</label>
               <input
@@ -24,6 +25,7 @@
                 value="<%= license.active_time %>"
               />
             </div>
+
             <div class="mb-3">
               <label for="script" class="form-label">Script</label>
               <select name="script" id="script" class="form-control" required>
@@ -36,6 +38,7 @@
                 <% }) %>
               </select>
             </div>
+
             <div class="mb-3">
               <label for="script_url" class="form-label">Script Url</label>
               <input
@@ -49,7 +52,7 @@
             </div>
 
             <button type="submit" class="btn btn-primary rounded-0">
-              Update
+              <i class="fa-solid fa-floppy-disk"></i> Update
             </button>
           </form>
         </div>

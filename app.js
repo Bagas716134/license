@@ -36,12 +36,20 @@ app.use((req, res, next) => {
 // Routes
 app.use(router);
 
+// Handle Route Not Found
+app.use(function (req, res, next) {
+  next(new Error("Page Not Found"));
+});
+
 // Handle Error
 app.use(function (error, req, res, next) {
-  // console.error(err.stack);
-  // res.status(500).send("Something broke!");
-  console.log(error);
-  res.render("error", { error: error });
+  if (!error) {
+    next();
+
+    return;
+  }
+
+  res.render("error", { error: error.message });
 });
 
 // Start server

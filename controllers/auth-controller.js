@@ -14,9 +14,7 @@ class AuthController {
   }
 
   static login(req, res) {
-    validate(AuthValidation.LOGIN, req, res);
-
-    const { username, password } = req.body;
+    const { username, password } = validate(AuthValidation.LOGIN, req, res);
 
     if (
       username === USER.username &&
@@ -30,7 +28,7 @@ class AuthController {
     }
 
     req.flash("status", "error");
-    req.flash("message", "Invalid username or password");
+    req.flash("message", "Invalid username or password!");
 
     res.redirect("/login");
   }
